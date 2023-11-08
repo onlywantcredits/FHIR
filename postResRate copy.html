@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title></title>
+
+  <script src="setting.js"></script>
+  <script src="Cookie.js"></script>
+  <script src="dateTime.js"></script>
+  <script src="HTTP2024.js"></script>
+
+  <script>
+    //respiratoryRate.js
+
+    var jsonObj = {
+      "resourceType": "Observation",
+      "status": "final",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "8310-5",
+            "display": "Body temperature"
+          }
+        ],
+        "text": "Body temperature"
+      },
+      "subject": {
+        "reference": "Patient/23547872",
+        "display": "黃大名"
+      },
+      "effectiveDateTime": "2023-10-11T08:30:00Z",
+      "valueQuantity": {
+        "value": 37.5,
+        "unit": "°C",
+        "system": "http://unitsofmeasure.org",
+        "code": "Cel"
+      }
+    };
+
+    function postData() {
+      jsonObj.valueQuantity.value = parseFloat(document.getElementById("resRate").value);
+      jsonObj.effectiveDateTime = getFormattedTime();
+      var jsonStr = JSON.stringify(jsonObj);
+      //alert(jsonStr);
+      var apiURL;
+      apiURL = FHIRrootURL + "Observation";
+      // HTTPPostData( apiURL,jsonStr);
+      sendHttpPost(apiURL, jsonStr, callBack);
+    }
+    function callBack(ret) {
+      console.log(ret);
+      //alert(ret);
+    }
+  </script>
+
+</head>
+
+<body style="height: 780px">
+
+  <p>請輸入體溫</p>
+
+  <input id="Button1" onclick="postData()" type="button" value="postData" /><br />
+
+  體溫: <input type="text" id="resRate" /> <br />
+
+
+
+</body>
+
+</html>
